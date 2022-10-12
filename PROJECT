@@ -5,4 +5,26 @@ plugins:
   manifests.sdk.operatorframework.io/v2: {}
   scorecard.sdk.operatorframework.io/v2: {}
 projectName: prisma-new
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  domain: paloaltonetworks.com
+  group: pcc
+  kind: Console
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  domain: paloaltonetworks.com
+  group: pcc
+  kind: Defender
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  domain: paloaltonetworks.com
+  group: pcc
+  kind: ConsoleDefender
+  version: v1alpha1
 version: "3"

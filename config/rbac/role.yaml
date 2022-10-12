@@ -37,4 +37,55 @@ rules:
       - patch
       - update
       - watch
+  ##
+  ## Rules for pcc.paloaltonetworks.com/v1alpha1, Kind: Console
+  ##
+  - apiGroups:
+      - pcc.paloaltonetworks.com
+    resources:
+      - consoles
+      - consoles/status
+      - consoles/finalizers
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  ##
+  ## Rules for pcc.paloaltonetworks.com/v1alpha1, Kind: Defender
+  ##
+  - apiGroups:
+      - pcc.paloaltonetworks.com
+    resources:
+      - defenders
+      - defenders/status
+      - defenders/finalizers
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  ##
+  ## Rules for pcc.paloaltonetworks.com/v1alpha1, Kind: ConsoleDefender
+  ##
+  - apiGroups:
+      - pcc.paloaltonetworks.com
+    resources:
+      - consoledefenders
+      - consoledefenders/status
+      - consoledefenders/finalizers
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
 #+kubebuilder:scaffold:rules

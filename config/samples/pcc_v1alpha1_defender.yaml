@@ -1,0 +1,6 @@
+apiVersion: pcc.paloaltonetworks.com/v1alpha1
+kind: Defender
+metadata:
+  name: defender-sample
+spec:
+  # TODO(user): Add fields here
