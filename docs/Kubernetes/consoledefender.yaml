@@ -1,0 +1,14 @@
+---
+apiVersion: pcc.paloaltonetworks.com/v1alpha1
+kind: ConsoleDefender
+metadata:
+  name: pcc-consoledefender
+  namespace: twistlock
+spec:
+  namespace: twistlock
+  orchestrator: kubernetes
+  version: '21_08_520'
+  consoleConfig:
+    serviceType: ClusterIP
+  defenderConfig:
+    docker: false
