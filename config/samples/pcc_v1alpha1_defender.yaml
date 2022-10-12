@@ -10,3 +10,4 @@ spec:
     clusterAddress: twistlock-console.example.com
     consoleAddress: https://twistlock-console.example.com:8083
     docker: false
+

@@ -8,3 +8,4 @@ spec:
   version: "21_08_520"
   consoleConfig:
     serviceType: ClusterIP
+

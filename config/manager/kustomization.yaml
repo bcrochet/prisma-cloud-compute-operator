@@ -8,3 +8,11 @@ images:
 - digest: sha256:b8fcfbd6c51286c874e00db1bd35523386cec406fa4050ef44c0a887730cf9b8
   name: controller
   newName: quay.io/prismacloud/pcc-operator
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+- files:
+  - controller_manager_config.yaml
+  name: manager-config

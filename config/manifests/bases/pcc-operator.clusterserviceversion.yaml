@@ -3,11 +3,11 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: ClusterServiceVersion
 metadata:
   annotations:
-    alm-examples: "[]"
+    alm-examples: '[]'
     capabilities: Seamless Upgrades
     categories: Security
     containerImage: quay.io/prismacloud/pcc-operator@sha256:b8fcfbd6c51286c874e00db1bd35523386cec406fa4050ef44c0a887730cf9b8
-    createdAt: '2021-11-15'
+    createdAt: "2021-11-15"
     description: Deploy Prisma Cloud Compute for cloud-native security in your clusters
     operators.openshift.io/infrastructure-features: '["Disconnected"]'
     operators.operatorframework.io/builder: operator-sdk-v1.14.0
@@ -363,8 +363,8 @@ spec:
     mediatype: image/svg+xml
   install:
     spec:
-      deployments: 
-    strategy: ''
+      deployments: null
+    strategy: ""
   installModes:
   - supported: true
     type: OwnNamespace
