@@ -28,12 +28,12 @@ BUNDLE_METADATA_OPTS ?= $(BUNDLE_CHANNELS) $(BUNDLE_DEFAULT_CHANNEL)
 # This variable is used to construct full image tags for bundle and catalog images.
 #
 # For example, running 'make bundle-build bundle-push catalog-build catalog-push' will build and push both
-# paloaltonetworks.com/prisma-new-bundle:$VERSION and paloaltonetworks.com/prisma-new-catalog:$VERSION.
-IMAGE_TAG_BASE ?= paloaltonetworks.com/prisma-new
+# paloaltonetworks.com/pcc-operator-bundle:$VERSION and paloaltonetworks.com/pcc-operator-catalog:$VERSION.
+IMAGE_TAG_BASE ?= paloaltonetworks.com/pcc-operator
 
 # BUNDLE_IMG defines the image:tag used for the bundle.
 # You can use it as an arg. (E.g make bundle-build BUNDLE_IMG=<some-registry>/<project-name-bundle>:<tag>)
-BUNDLE_IMG ?= $(IMAGE_TAG_BASE)-bundle:v$(VERSION)
+BUNDLE_IMG ?= ${IMAGE_REPO}/$(IMAGE_TAG_BASE)-bundle:v$(VERSION)
 
 # BUNDLE_GEN_FLAGS are the flags passed to the operator-sdk generate bundle command
 BUNDLE_GEN_FLAGS ?= -q --overwrite --version $(VERSION) $(BUNDLE_METADATA_OPTS)
@@ -47,7 +47,7 @@ ifeq ($(USE_IMAGE_DIGESTS), true)
 endif
 
 # Image URL to use all building/pushing image targets
-IMG ?= controller:latest
+IMG ?= ${IMAGE_REPO}/${IMAGE_TAG_BASE}:$(VERSION)
 
 .PHONY: all
 all: podman-build
@@ -77,7 +77,7 @@ run: ansible-operator ## Run against the configured Kubernetes cluster in ~/.kub
 
 .PHONY: podman-build
 podman-build: ## Build podman image with the manager.
-	podman build -t ${IMG} .
+	podman build -t ${IMG} --build-arg VERSION=v$(VERSION) . 
 
 .PHONY: podman-push
 podman-push: ## Push podman image with the manager.
@@ -160,7 +160,7 @@ ifeq (,$(shell which opm 2>/dev/null))
 	@{ \
 	set -e ;\
 	mkdir -p $(dir $(OPM)) ;\
-	curl -sSLo $(OPM) https://github.com/operator-framework/operator-registry/releases/download/v1.23.0/$(OS)-$(ARCH)-opm ;\
+	curl -sSLo $(OPM) https://github.com/operator-framework/operator-registry/releases/download/v1.24.0/$(OS)-$(ARCH)-opm ;\
 	chmod +x $(OPM) ;\
 	}
 else
@@ -173,7 +173,7 @@ endif
 BUNDLE_IMGS ?= $(BUNDLE_IMG)
 
 # The image tag given to the resulting catalog image (e.g. make catalog-build CATALOG_IMG=example.com/operator-catalog:v0.2.0).
-CATALOG_IMG ?= $(IMAGE_TAG_BASE)-catalog:v$(VERSION)
+CATALOG_IMG ?= ${IMAGE_REPO}/$(IMAGE_TAG_BASE)-catalog:v$(VERSION)
 
 # Set CATALOG_BASE_IMG to an existing catalog image tag to add $BUNDLE_IMGS to that image.
 ifneq ($(origin CATALOG_BASE_IMG), undefined)

@@ -36,7 +36,7 @@ spec:
       containers:
       - args:
         - --leader-elect
-        - --leader-election-id=prisma-new
+        - --leader-election-id=pcc-operator
         image: controller:latest
         name: manager
         env:

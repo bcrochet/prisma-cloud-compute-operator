@@ -4,41 +4,93 @@ kind: ClusterRole
 metadata:
   name: manager-role
 rules:
-  ##
-  ## Base operator rules
-  ##
   - apiGroups:
       - ""
     resources:
+      - configmaps
+      - namespaces
+      - persistentvolumeclaims
       - secrets
-      - pods
-      - pods/exec
-      - pods/log
+      - serviceaccounts
+      - services
     verbs:
       - create
-      - delete
       - get
       - list
       - patch
-      - update
       - watch
   - apiGroups:
       - apps
     resources:
-      - deployments
       - daemonsets
-      - replicasets
-      - statefulsets
+      - deployments
     verbs:
       - create
-      - delete
       - get
       - list
       - patch
-      - update
+      - watch
+  - apiGroups:
+      - rbac.authorization.k8s.io
+    resources:
+      - clusterroles
+      - clusterrolebindings
+      - roles
+      - rolebindings
+    verbs:
+      - create
+      - get
+      - list
+      - patch
+      - watch
+  - apiGroups:
+      - security.openshift.io
+    resources:
+      - securitycontextconstraints
+    verbs:
+      - create
+      - get
+      - list
+      - patch
       - watch
   ##
-  ## Rules for pcc.paloaltonetworks.com/v1alpha1, Kind: Console
+  ## For label collection support
+  ##
+  - apiGroups:
+      - apps
+    resources:
+      - replicasets
+    verbs:
+      - get
+  ##
+  ## For monitor Istio support
+  ##
+  - apiGroups:
+      - ""
+    resources:
+      - endpoints
+      - pods
+      - pods/proxy
+    verbs:
+      - get
+      - list
+  - apiGroups:
+      - networking.istio.io
+    resources:
+      - destinationrules
+      - gateways
+      - virtualservices
+    verbs:
+      - list
+  - apiGroups:
+      - security.istio.io
+    resources:
+      - authorizationpolicies
+      - peerauthentications
+    verbs:
+      - list
+  ##
+  ## Rules for pcc.paloaltonetworks.com/v1alpha1, Kind: Console, Kind: ConsoleDefender, Kind: Defender
   ##
   - apiGroups:
       - pcc.paloaltonetworks.com
@@ -46,20 +98,9 @@ rules:
       - consoles
       - consoles/status
       - consoles/finalizers
-    verbs:
-      - create
-      - delete
-      - get
-      - list
-      - patch
-      - update
-      - watch
-  ##
-  ## Rules for pcc.paloaltonetworks.com/v1alpha1, Kind: Defender
-  ##
-  - apiGroups:
-      - pcc.paloaltonetworks.com
-    resources:
+      - consoledefenders
+      - consoledefenders/status
+      - consoledefenders/finalizers
       - defenders
       - defenders/status
       - defenders/finalizers
@@ -71,21 +112,5 @@ rules:
       - patch
       - update
       - watch
-  ##
-  ## Rules for pcc.paloaltonetworks.com/v1alpha1, Kind: ConsoleDefender
-  ##
-  - apiGroups:
-      - pcc.paloaltonetworks.com
-    resources:
-      - consoledefenders
-      - consoledefenders/status
-      - consoledefenders/finalizers
-    verbs:
-      - create
-      - delete
-      - get
-      - list
-      - patch
-      - update
-      - watch
+
 #+kubebuilder:scaffold:rules

@@ -13,32 +13,104 @@ spec:
   scope: Namespaced
   versions:
   - name: v1alpha1
-    schema:
-      openAPIV3Schema:
-        description: ConsoleDefender is the Schema for the consoledefenders API
-        properties:
-          apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
-            type: string
-          kind:
-            description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
-            type: string
-          metadata:
-            type: object
-          spec:
-            description: Spec defines the desired state of ConsoleDefender
-            type: object
-            x-kubernetes-preserve-unknown-fields: true
-          status:
-            description: Status defines the observed state of ConsoleDefender
-            type: object
-            x-kubernetes-preserve-unknown-fields: true
-        type: object
     served: true
     storage: true
-    subresources:
-      status: {}
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              namespace:
+                type: string
+              orchestrator:
+                type: string
+                pattern: '^(?:kubernetes|openshift)$'
+              toolBundleUrl:
+                type: string
+              version:
+                type: string
+                pattern: '^\d{2}_\d{2}_\d{1,5}$'
+              credentials:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    pattern: '^[0-9a-z]{32}$'
+                  license:
+                    type: string
+                  password:
+                    type: string
+                  username:
+                    type: string
+              consoleConfig:
+                type: object
+                properties:
+                  imagePullSecret:
+                    type: string
+                  imageName:
+                    type: string
+                  nodeLabels:
+                    type: string
+                  persistentVolumeLabels:
+                    type: string
+                  persistentVolumeStorage:
+                    type: string
+                  runAsUser:
+                    type: boolean
+                    default: false
+                  serviceType:
+                    type: string
+                  storageClass:
+                    type: string
+              defenderConfig:
+                type: object
+                properties:
+                  cluster:
+                    type: string
+                  collectPodLabels:
+                    type: boolean
+                    default: false
+                  docker:
+                    type: boolean
+                    default: true
+                  dockerSocketPath:
+                    type: string
+                  imagePullSecret:
+                    type: string
+                  imageName:
+                    type: string
+                  monitorIstio:
+                    type: boolean
+                    default: false
+                  monitorServiceAccounts:
+                    type: boolean
+                    default: true
+                  nodeLabels:
+                    type: string
+                  privileged:
+                    type: boolean
+                    default: false
+                  project:
+                    type: string
+                  proxyAddress:
+                    type: string
+                  proxyCa:
+                    type: string
+                  proxyPassword:
+                    type: string
+                  proxyUsername:
+                    type: string
+                  selinuxEnabled:
+                    type: boolean
+                    default: false
+                  toleration:
+                    type: boolean
+                    default: false
+                  tolerationKey:
+                    type: string
+                    default: node-role.kubernetes.io/master
+                  tolerationEffect:
+                    type: string
+                    default: NoSchedule
