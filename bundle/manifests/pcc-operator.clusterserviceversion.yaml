@@ -8,25 +8,51 @@ metadata:
           "apiVersion": "pcc.paloaltonetworks.com/v1alpha1",
           "kind": "Console",
           "metadata": {
-            "name": "console-sample"
+            "name": "pcc-console",
+            "namespace": "twistlock"
           },
-          "spec": null
+          "spec": {
+            "consoleConfig": {
+              "serviceType": "ClusterIP"
+            },
+            "namespace": "twistlock",
+            "version": "21_08_520"
+          }
         },
         {
           "apiVersion": "pcc.paloaltonetworks.com/v1alpha1",
           "kind": "ConsoleDefender",
           "metadata": {
-            "name": "consoledefender-sample"
+            "name": "pcc-consoledefender",
+            "namespace": "twistlock"
           },
-          "spec": null
+          "spec": {
+            "consoleConfig": {
+              "serviceType": "ClusterIP"
+            },
+            "defenderConfig": {
+              "docker": false
+            },
+            "namespace": "twistlock",
+            "version": "21_08_520"
+          }
         },
         {
           "apiVersion": "pcc.paloaltonetworks.com/v1alpha1",
           "kind": "Defender",
           "metadata": {
-            "name": "defender-sample"
+            "name": "pcc-defender",
+            "namespace": "twistlock"
           },
-          "spec": null
+          "spec": {
+            "defenderConfig": {
+              "clusterAddress": "twistlock-console.example.com",
+              "consoleAddress": "https://twistlock-console.example.com:8083",
+              "docker": false
+            },
+            "namespace": "twistlock",
+            "version": "21_08_520"
+          }
         }
       ]
     capabilities: Seamless Upgrades
@@ -39,7 +65,7 @@ metadata:
     operators.operatorframework.io/project_layout: ansible.sdk.operatorframework.io/v1
     repository: https://github.com/PaloAltoNetworks/prisma-cloud-compute-operator
     support: pcc-integrations@paloaltonetworks.com
-  name: pcc-operator.v0.2.0
+  name: pcc-operator.v0.2.2-alpha6
   namespace: placeholder
 spec:
   apiservicedefinitions: {}
@@ -549,9 +575,46 @@ spec:
                 - --leader-elect
                 - --leader-election-id=pcc-operator
                 env:
+                - name: WATCH_NAMESPACE
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.annotations['olm.targetNamespaces']
                 - name: ANSIBLE_GATHERING
                   value: explicit
-                image: quay.io/bcrochet/pcc-operator:0.2.0
+                - name: PCC_ACCESS_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      key: accessToken
+                      name: pcc-credentials
+                      optional: true
+                - name: PCC_LICENSE
+                  valueFrom:
+                    secretKeyRef:
+                      key: license
+                      name: pcc-credentials
+                      optional: true
+                - name: PCC_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: password
+                      name: pcc-credentials
+                      optional: true
+                - name: PCC_USERNAME
+                  valueFrom:
+                    secretKeyRef:
+                      key: username
+                      name: pcc-credentials
+                      optional: true
+                - name: ANSIBLE_VERBOSITY_CONSOLE_PCC_PALOALTONETWORKS_COM
+                  value: "4"
+                - name: ANSIBLE_VERBOSITY_DEFENDER_PCC_PALOALTONETWORKS_COM
+                  value: "4"
+                - name: ANSIBLE_VERBOSITY_CONSOLEDEFENDER_PCC_PALOALTONETWORKS_COM
+                  value: "4"
+                - name: ANSIBLE_DEBUG_LOGS
+                  value: "true"
+                image: quay.io/bcrochet/pcc-operator:0.2.2-alpha6
+                imagePullPolicy: Always
                 livenessProbe:
                   httpGet:
                     path: /healthz
@@ -574,9 +637,6 @@ spec:
                     memory: 256Mi
                 securityContext:
                   allowPrivilegeEscalation: false
-                  capabilities:
-                    drop:
-                    - ALL
               securityContext:
                 runAsNonRoot: true
               serviceAccountName: twistlock-controller-manager
@@ -661,4 +721,4 @@ spec:
   maturity: alpha
   provider:
     name: Palo Alto Networks
-  version: 0.2.0
+  version: 0.2.2-alpha6

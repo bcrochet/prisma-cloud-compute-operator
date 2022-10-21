@@ -1,0 +1,13 @@
+#!/bin/sh
+ 
+linux/twistcli console export {{ orchestrator }} \
+    {{ ('--image-pull-secrets ' + consoleConfig.imagePullSecret) if consoleConfig.imagePullSecret is defined else '' }} \
+    --image-name {{ consoleConfig.imageName if consoleConfig.imageName is defined else 'registry-auth.twistlock.com/tw_' + access_token + '/twistlock/console:console_' + version }} \
+    {{ ('--namespace ' + namespace) if namespace is defined else '' }} \
+    {{ ('--node-labels ' + consoleConfig.nodeLabels) if consoleConfig.nodeLabels is defined else '' }} \
+    {{ ('--persistent-volume-labels ' + consoleConfig.persistentVolumeLabels) if consoleConfig.persistentVolumeLabels is defined else '' }} \
+    {{ ('--persistent-volume-storage ' + consoleConfig.persistentVolumeStorage) if consoleConfig.persistentVolumeStorage is defined else '' }} \
+    {{ '--run-as-user' if consoleConfig.runAsUser else '' }} \
+    {{ ('--service-type ' + consoleConfig.serviceType) if consoleConfig.serviceType is defined else '' }} \
+    {{ ('--storage-class ' + consoleConfig.storageClass) if consoleConfig.storageClass is defined else '' }} \
+    --output {{ work_dir }}

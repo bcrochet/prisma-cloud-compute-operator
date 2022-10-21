@@ -52,5 +52,5 @@
   when: defenderConfig.toleration | bool
 
 - name: Create Defender from YAML file
-  k8s:
+  kubernetes.core.k8s:
     src: "{{ work_dir }}/twistlock_defender.yaml"

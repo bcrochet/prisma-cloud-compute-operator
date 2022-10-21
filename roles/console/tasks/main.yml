@@ -29,7 +29,7 @@
     chdir: "{{ tools_dir.path }}"
 
 - name: Create Console from YAML file
-  k8s:
+  kubernetes.core.k8s:
     src: "{{ work_dir }}/twistlock_console.yaml"
 
 - name: Wait for Console to start up

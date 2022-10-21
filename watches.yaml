@@ -5,7 +5,7 @@
   role: console
   manageStatus: false
   snakeCaseParameters: false
-  watchDependentResources: false
+  watchDependentResources: true
 
 - version: v1alpha1
   group: pcc.paloaltonetworks.com
@@ -13,7 +13,7 @@
   role: defender
   manageStatus: false
   snakeCaseParameters: false
-  watchDependentResources: false
+  watchDependentResources: true
 
 - version: v1alpha1
   group: pcc.paloaltonetworks.com
@@ -21,6 +21,6 @@
   role: consoledefender
   manageStatus: false
   snakeCaseParameters: false
-  watchDependentResources: false
+  watchDependentResources: true
 
 #+kubebuilder:scaffold:watch

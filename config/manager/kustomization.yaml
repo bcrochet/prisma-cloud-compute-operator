@@ -5,9 +5,9 @@ resources:
 - manager.yaml
 
 images:
-- digest: sha256:b8fcfbd6c51286c874e00db1bd35523386cec406fa4050ef44c0a887730cf9b8
-  name: controller
-  newName: quay.io/prismacloud/pcc-operator
+- name: controller
+  newName: quay.io/bcrochet/pcc-operator
+  newTag: 0.2.2-alpha6
 
 generatorOptions:
   disableNameSuffixHash: true

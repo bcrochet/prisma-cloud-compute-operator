@@ -1,0 +1,24 @@
+#!/bin/sh
+
+linux/twistcli defender export {{ orchestrator }} \
+    --user {{ username }} \
+    --address https://twistlock-console.{{ namespace }}:8083 \
+    --cluster-address twistlock-console \
+    {{ ('--cluster ' + defenderConfig.cluster) if defenderConfig.cluster is defined else '' }} \
+    {{ '--collect-pod-labels' if defenderConfig.collectPodLabels else '' }} \
+    {{ '--cri' if not defenderConfig.docker else '' }} \
+    {{ ('--docker-socket-path ' + defenderConfig.dockerSocketPath) if defenderConfig.dockerSocketPath is defined else '' }} \
+    {{ ('--image-pull-secrets ' + defenderConfig.imagePullSecret) if defenderConfig.imagePullSecret is defined else '' }} \
+    {{ ('--image-name ' + defenderConfig.imageName) if defenderConfig.imageName is defined else '' }} \
+    {{ '--monitor-istio' if defenderConfig.monitorIstio else '' }} \
+    {{ '--monitor-service-accounts' if defenderConfig.monitorServiceAccounts else '' }} \
+    {{ ('--namespace ' + namespace) if namespace is defined else '' }} \
+    {{ ("--nodeSelector '" + defenderConfig.nodeLabels + "'") if defenderConfig.nodeLabels is defined else '' }} \
+    {{ '--privileged' if defenderConfig.privileged else '' }} \
+    {{ ('--project ' + defenderConfig.project) if defenderConfig.project is defined else '' }} \
+    {{ ('--proxy-address ' + defenderConfig.proxyAddress) if defenderConfig.proxyAddress is defined else '' }} \
+    {{ ('--proxy-ca ' + defenderConfig.proxyCa) if defenderConfig.proxyCa is defined else '' }} \
+    {{ ('--proxy-password ' + defenderConfig.proxyPassword) if defenderConfig.proxyPassword is defined else '' }} \
+    {{ ('--proxy-user ' + defenderConfig.proxyUsername) if defenderConfig.proxyUsername is defined else '' }} \
+    {{ '--selinux-enabled' if defenderConfig.selinuxEnabled else '' }} \
+    --output {{ work_dir }}/twistlock_defender.yaml

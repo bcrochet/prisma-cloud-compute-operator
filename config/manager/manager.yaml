@@ -31,6 +31,10 @@ spec:
         image: controller
         imagePullPolicy: Always
         env:
+        - name: WATCH_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
         - name: ANSIBLE_GATHERING
           value: explicit
         - name: PCC_ACCESS_TOKEN
@@ -57,6 +61,14 @@ spec:
               name: pcc-credentials
               key: username
               optional: true
+        - name: ANSIBLE_VERBOSITY_CONSOLE_PCC_PALOALTONETWORKS_COM
+          value: "4"
+        - name: ANSIBLE_VERBOSITY_DEFENDER_PCC_PALOALTONETWORKS_COM
+          value: "4"
+        - name: ANSIBLE_VERBOSITY_CONSOLEDEFENDER_PCC_PALOALTONETWORKS_COM
+          value: "4"
+        - name: ANSIBLE_DEBUG_LOGS
+          value: "true"
         args:
         - "--leader-elect"
         - "--leader-election-id=pcc-operator"
